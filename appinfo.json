@@ -1,0 +1,35 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "yuri@galanter.net",
+    "longName": "TV Time",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "file": "fonts/bradybun.ttf",
+                "name": "BRADY_44",
+                "type": "font"
+            },
+            {
+                "file": "images/bg_bw.png",
+                "name": "BITMAP_BG",
+                "type": "png"
+            }
+        ]
+    },
+    "sdkVersion": "3",
+    "shortName": "TV Time",
+    "targetPlatforms": [
+        "aplite",
+        "basalt"
+    ],
+    "uuid": "4f91e38d-a46e-4dae-a2a5-dede82a7f79a",
+    "versionCode": 1,
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": true
+    }
+}
