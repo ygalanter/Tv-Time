@@ -9,14 +9,14 @@
     "resources": {
         "media": [
             {
-                "file": "fonts/bradybun.ttf",
-                "name": "BRADY_44",
-                "type": "font"
-            },
-            {
                 "file": "images/bg_bw.png",
                 "name": "BITMAP_BG",
                 "type": "png"
+            },
+            {
+                "file": "fonts/bradybun.ttf",
+                "name": "BRADY_44",
+                "type": "font"
             }
         ]
     },
@@ -28,7 +28,7 @@
     ],
     "uuid": "4f91e38d-a46e-4dae-a2a5-dede82a7f79a",
     "versionCode": 1,
-    "versionLabel": "1.0",
+    "versionLabel": "1.1",
     "watchapp": {
         "watchface": true
     }

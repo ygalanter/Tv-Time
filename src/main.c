@@ -6,7 +6,8 @@ Window *my_window;
 TextLayer *text_time, *text_date, *text_dow;
 BitmapLayer *background_layer;
 GBitmap *bitmap_background;
-EffectLayer* effect_layer;
+EffectLayer *effect_layer, *effect_background_layer;
+EffectMask* mask;
 
 char s_date[] = "HELLO"; //test
 char s_time[] = "HOWRE"; //test
@@ -58,21 +59,40 @@ void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
 
 void handle_init(void) {
   my_window = window_create();
+  window_set_background_color(my_window, GColorBlack);
   window_stack_push(my_window, true);
   
-  //creating background
+  //creating background - but layer only on applite, basalt will create background via mask below
   bitmap_background = gbitmap_create_with_resource(RESOURCE_ID_BITMAP_BG);
-  background_layer = bitmap_layer_create(GRect(0, 0, 144, 168));
-  bitmap_layer_set_bitmap(background_layer, bitmap_background);
-  layer_add_child(window_get_root_layer(my_window), bitmap_layer_get_layer(background_layer));
+  #ifndef PBL_COLOR
+    background_layer = bitmap_layer_create(GRect(0, 0, 144, 168));
+    bitmap_layer_set_bitmap(background_layer, bitmap_background);
+    layer_add_child(window_get_root_layer(my_window), bitmap_layer_get_layer(background_layer));
+  #endif
   
   //creating texts
   text_date = create_datetime_layer(GRect(0,4,144,52), RESOURCE_ID_BRADY_44);
   text_time = create_datetime_layer(GRect(0,42,144,52), RESOURCE_ID_BRADY_44);
   text_dow = create_datetime_layer(GRect(0,78,144,52), RESOURCE_ID_BRADY_44);
-    
   
-  //creating effect layer
+  //if this is Basalt - creating layer with blur effect and background mask
+  #ifdef PBL_COLOR
+    //creating mask to show background bitmap thru
+    mask = malloc(sizeof(EffectMask));
+    mask->bitmap_background = bitmap_background;
+    mask->mask_color = GColorBlack;
+    mask->bitmap_mask = NULL;
+    mask->text = NULL;
+    mask->background_color = GColorClear;
+    
+    //adding effect of blur & mask
+    effect_background_layer = effect_layer_create(GRect(0,0,144,168));
+    effect_layer_add_effect(effect_background_layer, effect_blur, (void *)1);
+    effect_layer_add_effect(effect_background_layer, effect_mask, mask);
+    layer_add_child(window_get_root_layer(my_window), effect_layer_get_layer(effect_background_layer));
+  #endif
+  
+  //creating battery effect layer with inverter effect
   effect_layer = effect_layer_create(GRect(96,139,26,21));
   effect_layer_add_effect(effect_layer, effect_invert, NULL);
   layer_add_child(window_get_root_layer(my_window), effect_layer_get_layer(effect_layer));
@@ -97,7 +117,12 @@ void handle_deinit(void) {
   
   //clearnup
   gbitmap_destroy(bitmap_background);
-  bitmap_layer_destroy(background_layer);
+  #ifndef PBL_COLOR
+    bitmap_layer_destroy(background_layer);
+  #else
+    effect_layer_destroy(effect_background_layer);
+    free(mask);
+  #endif
   effect_layer_destroy(effect_layer);
   text_layer_destroy(text_date);
   text_layer_destroy(text_time);
