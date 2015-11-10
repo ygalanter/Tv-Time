@@ -13,6 +13,14 @@ char s_date[] = "HELLO"; //test
 char s_time[] = "HOWRE"; //test
 char s_dow[] = "YOU"; //test
 
+#ifndef PBL_SDK_2
+static void app_focus_changed(bool focused) {
+  if (focused) { // on resuming focus - restore background
+    layer_mark_dirty(effect_layer_get_layer(effect_layer));
+  }
+}
+#endif
+
 
 static void battery_handler(BatteryChargeState state) {
    layer_set_frame(effect_layer_get_layer(effect_layer), GRect(96,139,26*state.charge_percent/100,21));
@@ -58,6 +66,15 @@ void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
 }
 
 void handle_init(void) {
+  
+  
+  #ifndef PBL_SDK_2
+  // need to catch when app resumes focus after notification, otherwise background won't restore
+  app_focus_service_subscribe_handlers((AppFocusHandlers){
+    .did_focus = app_focus_changed
+  });
+  #endif
+  
   my_window = window_create();
   window_set_background_color(my_window, GColorBlack);
   window_stack_push(my_window, true);
@@ -114,6 +131,10 @@ void handle_init(void) {
 }
 
 void handle_deinit(void) {
+  
+   #ifndef PBL_SDK_2
+    app_focus_service_unsubscribe();
+  #endif
   
   //clearnup
   gbitmap_destroy(bitmap_background);
