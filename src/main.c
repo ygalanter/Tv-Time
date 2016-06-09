@@ -1,5 +1,5 @@
 #include <pebble.h>
-#include "effect_layer.h"
+#include <pebble-effect-layer/pebble-effect-layer.h>
 
 Window *my_window;
 
@@ -97,7 +97,11 @@ void handle_init(void) {
     //creating mask to show background bitmap thru
     mask = malloc(sizeof(EffectMask));
     mask->bitmap_background = bitmap_background;
-    mask->mask_color = GColorBlack;
+   
+    mask->mask_colors = malloc(sizeof(GColor)*2);
+    mask->mask_colors[0] = GColorBlack;
+    mask->mask_colors[1] = GColorClear;
+   
     mask->bitmap_mask = NULL;
     mask->text = NULL;
     mask->background_color = GColorClear;

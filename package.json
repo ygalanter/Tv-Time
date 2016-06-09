@@ -1,0 +1,47 @@
+{
+    "author": "yuri@galanter.net",
+    "dependencies": {
+        "pebble-effect-layer": "^1.1.1"
+    },
+    "keywords": [],
+    "name": "tv-time",
+    "pebble": {
+        "capabilities": [
+            ""
+        ],
+        "displayName": "TV Time",
+        "enableMultiJS": true,
+        "messageKeys": [],
+        "projectType": "native",
+        "resources": {
+            "media": [
+                {
+                    "file": "images/menu.png",
+                    "menuIcon": true,
+                    "name": "MENU",
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/bg_bw.png",
+                    "name": "BITMAP_BG",
+                    "type": "bitmap"
+                },
+                {
+                    "file": "fonts/bradybun.ttf",
+                    "name": "BRADY_44",
+                    "type": "font"
+                }
+            ]
+        },
+        "sdkVersion": "3",
+        "targetPlatforms": [
+            "aplite",
+            "basalt"
+        ],
+        "uuid": "4f91e38d-a46e-4dae-a2a5-dede82a7f79a",
+        "watchapp": {
+            "watchface": true
+        }
+    },
+    "version": "1.5.0"
+}
